@@ -80,7 +80,7 @@ namespace StudentManagementSystem
                 cmd.Parameters.AddWithValue("@ctype", course.CourseType);
                 cmd.Parameters.AddWithValue("@seats", course.SeatsAvaialble);
                 cmd.Parameters.AddWithValue("@clevel", course.courseLevel.ToString());
-                cmd.Parameters.AddWithValue("@plc", course.isPlacementAvailable==true?"yes":"No");
+                cmd.Parameters.AddWithValue("@plc", course.isPlacementAvailable==true?"1":"0");
                 cmd.Parameters.AddWithValue("@fees", course.Fees);
 
                 if (cnn.State == System.Data.ConnectionState.Open)
@@ -124,7 +124,7 @@ namespace StudentManagementSystem
                 cmd.Parameters.AddWithValue("@ctype", course.CourseType);
                 cmd.Parameters.AddWithValue("@seats", course.SeatsAvaialble);
                 cmd.Parameters.AddWithValue("@clevel", course.csType.ToString());
-                cmd.Parameters.AddWithValue("@plc", course.isPlacementAvailable == true ? "yes" : "No");
+                cmd.Parameters.AddWithValue("@plc", course.isPlacementAvailable == true ? "1" : "0");
                 cmd.Parameters.AddWithValue("@fees", course.Fees);
 
                 if (cnn.State == System.Data.ConnectionState.Open)
@@ -157,8 +157,8 @@ namespace StudentManagementSystem
             if (cnn.State == System.Data.ConnectionState.Open)
                 cnn.Close();
             cnn.Open();
-
-            SqlCommand cmd = new SqlCommand("SELECT * FROM course where course level='Degree'", cnn);
+            CourseArr.Clear();
+            SqlCommand cmd = new SqlCommand("SELECT * FROM course where [course level]='Degree'", cnn);
             SqlDataReader rd = cmd.ExecuteReader();
            // SqlDataAdapter da = new SqlDataAdapter();
 
@@ -166,14 +166,16 @@ namespace StudentManagementSystem
             {
                 while (rd.Read())
                 {
-                    DegreeCourse course = new DegreeCourse(rd[0].ToString(), rd[1].ToString(), rd[2].ToString(), float.Parse(rd[3].ToString()), rd[4].ToString(), rd[5].ToString(),rd[6], rd[7].,rd[8].ToString());
-                    //StudentArr.Add(student);
-                    //count++;
+                   
+                    DegreeCourse course = new DegreeCourse(rd[0].ToString(), rd[1].ToString(), rd[2].ToString(), float.Parse(rd[3].ToString()), int.Parse(rd[6].ToString()), Enum.Parse<DegreeCourse.level>(rd[7].ToString()), rd[5] as bool? ?? false, rd[4].ToString()) ;
+                   
+                    CourseArr.Add(course);
+                    count++;
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e);
             }
             //return StudentArr;
             finally
@@ -185,7 +187,45 @@ namespace StudentManagementSystem
                 return CourseArr;
 
             else
-                throw new Exception("no students registered in system");
+                throw new Exception("no course registered in system");
+            // return CourseArr;
+        }
+        public List<Course> listOfDCourses()
+        {
+            if (cnn.State == System.Data.ConnectionState.Open)
+                cnn.Close();
+            cnn.Open();
+            CourseArr.Clear();
+            SqlCommand cmd = new SqlCommand("SELECT * FROM course where [course level]='Diploma'", cnn);
+            SqlDataReader rd = cmd.ExecuteReader();
+            // SqlDataAdapter da = new SqlDataAdapter();
+
+            try
+            {
+                while (rd.Read())
+                {
+
+                    DiplomaCourse course = new DiplomaCourse(rd[0].ToString(), rd[1].ToString(), rd[2].ToString(), float.Parse(rd[3].ToString()), int.Parse(rd[6].ToString()), Enum.Parse<DiplomaCourse.type>(rd[7].ToString()), rd[5] as bool? ?? false, rd[4].ToString());
+
+                    CourseArr.Add(course);
+                    count++;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            //return StudentArr;
+            finally
+            {
+                cnn.Close();
+            }
+
+            if (CourseArr.Count != 0)
+                return CourseArr;
+
+            else
+                throw new Exception("no course registered in system");
             // return CourseArr;
         }
 
@@ -267,10 +307,46 @@ namespace StudentManagementSystem
 
         public void enroll(Student student, Course course, DateTime enrollmentdate)
         {
+            if (student.Id != "" && course.CourseId != "")
+            {
+                cnn.Open();
+                SqlCommand cmd = new SqlCommand("procenroll", cnn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@stid", student.Id);
+                cmd.Parameters.AddWithValue("@cid", course.CourseId);
+                cmd.Parameters.AddWithValue("@doe", DateTime.UtcNow );
 
-            EnrollArr.Add(new Enroll(student, course, enrollmentdate));
-            enrollmentcount++;
+                if (cnn.State == System.Data.ConnectionState.Open)
+                    cnn.Close();
+                cnn.Open();
+                try
+                {
+
+                    if (cmd.ExecuteNonQuery() > 0)
+                    {
+
+                        Console.WriteLine("student {0} enrolled successfully", student.Name);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    cnn.Close();
+                }
+            }
+            else throw new Exception(" enter complete details ");
+
+
         }
+
+
+        //EnrollArr.Add(new Enroll(student, course, enrollmentdate));
+        //enrollmentcount++;
+    
 
         public List<Enroll> listOfEnrollments()
         {

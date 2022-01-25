@@ -75,7 +75,7 @@ namespace StudentManagementSystem
         public level courseLevel;
         public bool active;
         public bool isPlacementAvailable;
-        public DegreeCourse(string id, string name, string duration, float fees, int seatsavaialble, level courseLevel, bool active, bool isPlacementAvailable, string courseType) : base(id, name, duration, fees, seatsavaialble, courseType)
+        public DegreeCourse(string id, string name, string duration, float fees, int seatsavaialble, level courseLevel, bool isPlacementAvailable, string courseType) : base(id, name, duration, fees, seatsavaialble, courseType)
         {
             this.courseLevel = courseLevel;
             this.active = active;

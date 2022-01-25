@@ -184,17 +184,22 @@ namespace StudentManagementSystem
             switch (ch)
             {
                 case 1:
+                    var degreeCourse = en.listOfCourses();
+
                     Console.WriteLine("\nID\tCourse Name\tDuration\tFee\tSeats\tLevel\tPlacemment Available");
-                    var degreeCourse = en.CourseArr.Where(course => course.CourseType == "Degree");
+
                     foreach (var course in degreeCourse)
                         Console.WriteLine(course);
                     break;
                 case 2:
+
                     Console.WriteLine("\nID\tCourse Name\tDuration\tFee\tSeats\tType");
-                    var diplomaCourse = en.CourseArr.Where(course => course.CourseType == "Diploma");
+
+                    var diplomaCourse = en.listOfDCourses();
                     foreach (var course in diplomaCourse)
                         Console.WriteLine(course);
                     break;
+                
                 default:
                     Console.WriteLine("Wrong choice");
                     break;
@@ -232,20 +237,20 @@ namespace StudentManagementSystem
                 String placement = Console.ReadLine().ToLower();
                 if (placement == "yes")
                 {
-                    en.introduceDegree(new DegreeCourse(CourseId, CourseName, CourseDuration, CourseFees, seats, Enum.Parse<DegreeCourse.level>(dtype), true, true, "Degree"));
+                    en.introduceDegree(new DegreeCourse(CourseId, CourseName, CourseDuration, CourseFees, seats, Enum.Parse<DegreeCourse.level>(dtype), true, "Degree"));
                 }
                 else if (placement == "no")
                 {
-                    en.introduceDegree(new DegreeCourse(CourseId, CourseName, CourseDuration, CourseFees, seats, Enum.Parse<DegreeCourse.level>(dtype), true, false, "Degree"));
+                    en.introduceDegree(new DegreeCourse(CourseId, CourseName, CourseDuration, CourseFees, seats, Enum.Parse<DegreeCourse.level>(dtype), false, "Degree"));
                 }
-                Console.WriteLine("Introduced a new course Successfully\n");
+                Console.WriteLine("\nIntroduced a new course Successfully\n");
             }
             else if (choice == "Diploma")
             {
                 Console.WriteLine("Course Type: professional/academic");
                 string type = Console.ReadLine();
                 en.introduceDiploma(new DiplomaCourse(CourseId, CourseName, CourseDuration, CourseFees, seats, Enum.Parse<DiplomaCourse.type>(type),false, "Diploma"));
-                Console.WriteLine("Introduced a new course Successfully\n");
+                Console.WriteLine("\nIntroduced a new course Successfully\n");
             }
 
 
@@ -309,7 +314,7 @@ namespace StudentManagementSystem
         public void showFirstScreen()
         {
 
-            en.introduce(new DegreeCourse("11", "CS", "3 Months", 3000, 10, Enum.Parse<DegreeCourse.level>("Bachelors"), true, true, "Degree"));
+            en.introduce(new DegreeCourse("11", "CS", "3 Months", 3000, 10, Enum.Parse<DegreeCourse.level>("Bachelors"),true, "Degree"));
 
             while (true)
             {

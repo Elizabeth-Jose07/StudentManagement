@@ -37,3 +37,12 @@ ADD [placement] BOOLEAN;
   
 
   UPDATE course SET ctype='Bachelors' WHERE cid='12';
+
+  
+  update course set placement=1 where cid= '100'
+
+  delete from course
+  select placement from course
+
+  select * from course
+  update course set cDuration ='2 months' where cid='100';
