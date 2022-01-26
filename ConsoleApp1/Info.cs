@@ -8,8 +8,7 @@ namespace StudentManagementSystem
     {
         public void display(Student student)
         {
-            //test by elizabeth
-
+          
 
             Console.WriteLine(student);
 
