@@ -190,6 +190,9 @@ namespace StudentManagementSystem
                 throw new Exception("no course registered in system");
             // return CourseArr;
         }
+
+
+        // reurns the course list  of diploma courses data retrived from data base
         public List<Course> listOfDCourses()
         {
             if (cnn.State == System.Data.ConnectionState.Open)
@@ -229,6 +232,8 @@ namespace StudentManagementSystem
             // return CourseArr;
         }
 
+
+        //register a student to  student management system
         public void register(Student student)
         {
             //StudentArr.Add(student);
@@ -268,13 +273,13 @@ namespace StudentManagementSystem
 
 
         }
-
+        //returns the student list , data retrieved from the database
         public List<Student> listOfStudents()
         {
             if (cnn.State == System.Data.ConnectionState.Open)
                 cnn.Close();
             cnn.Open();
-            
+            StudentArr.Clear();
             SqlCommand cmd = new SqlCommand("SELECT * FROM STUDENTS",cnn);
             SqlDataReader rd = cmd.ExecuteReader();
             
@@ -305,6 +310,7 @@ namespace StudentManagementSystem
 
         }
 
+        //Enroll a student to a course and store it to data base
         public void enroll(Student student, Course course, DateTime enrollmentdate)
         {
             if (student.Id != "" && course.CourseId != "")
@@ -348,18 +354,116 @@ namespace StudentManagementSystem
         //enrollmentcount++;
     
 
-        public List<Enroll> listOfEnrollments()
+        //returns the enroll list, data retreived from database
+        public  void  listOfEnrollments()
         {
-            return EnrollArr;
+            if (cnn.State == System.Data.ConnectionState.Open)
+                cnn.Close();
+            cnn.Open();
+
+            SqlCommand cmd = new SqlCommand("GetEnrollments", cnn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            
+            SqlDataReader rd = cmd.ExecuteReader();
+            try
+            {
+                while(rd.Read())
+                {
+                
+                    //Enroll enroll = new Enroll(GetStudentById(rd[0].ToString()), GetCourseById(rd[1].ToString()), (DateTime) rd[2]);
+                    //EnrollArr.Add(enroll);
+                    Console.WriteLine(rd[0]+"\t"+rd[1]+"\t"+rd[2]+"\t"+rd[3]);
+                }
+            }
+
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                cnn.Close();
+            }
+
+            //if (EnrollArr.Count != 0)
+            //    return EnrollArr;
+
+            //else
+            //    throw new Exception("no students enrolled for courses");
+
+            //return EnrollArr;
         }
 
-        public int getId(int id)
+        //gets students by id
+        public Student GetStudentById(string id)
         {
-            int ccid = (from en in EnrollArr
-                        where int.Parse(en.student.Id) == id
-                        select int.Parse(en.course.CourseId)).SingleOrDefault();
-            return ccid;
+            if (cnn.State == System.Data.ConnectionState.Open)
+                    cnn.Close();
+            cnn.Open();
+
+            SqlCommand cmd = new SqlCommand("procGetStudentByID", cnn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            
+            cmd.Parameters .AddWithValue("@stid", id);
+            SqlDataReader rd = cmd.ExecuteReader();
+            
+            
+                if (rd.Read())
+                {
+                Student student = new Student(rd[0].ToString(), rd[1].ToString(), (DateTime)rd[2]);
+                cnn.Close();
+
+                return student;
+                }
+            
+            
+            else
+            {
+                throw new StudentException(" student not registered in system");
+            }
+
+            
+
+
         }
+        //gets the course by its id
+        public Course GetCourseById(string id)
+        {
+            if (cnn.State == System.Data.ConnectionState.Open)
+                cnn.Close();
+            cnn.Open();
+
+            SqlCommand cmd = new SqlCommand("procGetCourseByID", cnn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@cid", id);
+            SqlDataReader rd = cmd.ExecuteReader();
+
+            if (rd.Read())
+            {
+                Course course = new Course(rd[0].ToString(), rd[1].ToString());
+                cnn.Close();
+                return course;
+            }
+            else
+            {
+                throw new Exception(" course doesn't exist");
+            }
+            
+
+
+
+        }
+
+
+        //old code for getting students by id
+        //public int getId(int id)
+        //{
+        //    int ccid = (from en in EnrollArr
+        //                where int.Parse(en.student.Id) == id
+        //                select int.Parse(en.course.CourseId)).SingleOrDefault();
+        //    return ccid;
+        //}
         public override string ToString()
         {
             return string.Format("\n" + student.Id + "\t\t" + student.Name + "\t\t" + course.CourseName + "\t\t" + EnrollmentDate.ToShortDateString() + "\n");

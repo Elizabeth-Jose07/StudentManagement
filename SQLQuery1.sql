@@ -46,3 +46,60 @@ ADD [placement] BOOLEAN;
 
   select * from course
   update course set cDuration ='2 months' where cid='100';
+
+-- create proc  procGetStudentByID(@stid nvarchar (10))
+--as
+--begin 
+--select * from students where studentid= @stid
+--end
+
+--create proc procGetCourseByID(@cid nvarchar(10))
+--as
+--begin
+--select * from course where cid= @cid;
+--end
+
+
+--alter proc procGetCourseByID(@cid nvarchar(10))
+--as
+--begin
+--select cid,cname from course where cid= @cid;
+--end
+
+--alter proc procenroll(@stid nvarchar(10), @cid nvarchar(10),@doe datetime) as
+-- begin
+-- insert into enroll values(@stid,@cid,@doe)
+-- end
+
+ select * from course
+
+ Insert into enroll(studentid,cid,DateOfEnroll)
+ values(13,100,'2011-09-08')
+
+ Insert into enroll(studentid,cid,doe)
+ values(13,200,'2011-09-08')
+
+
+ select * from Enroll
+ alter table enroll add
+ primary key(studentid,cid)
+
+ drop table enroll
+
+ create table Enroll(studentid nvarchar(10) references students(studentid),cid nvarchar (10) references course(cid),DateOfEnroll date, primary key (studentid,cid));
+
+ select s.studentid,s.studentname,c.cname,e.DateOfEnroll
+ from students s inner join enroll e
+ on s.studentid=e.studentid
+ join course c on
+ c.cid=e.cid;
+
+ --create proc GetEnrollments
+ --as
+ --begin
+ --select s.studentid,s.studentname,c.cname,e.DateOfEnroll
+ --from students s inner join enroll e
+ --on s.studentid=e.studentid
+ --join course c on
+ --c.cid=e.cid;
+ --end

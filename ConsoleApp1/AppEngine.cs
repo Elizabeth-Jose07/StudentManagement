@@ -10,6 +10,6 @@ namespace StudentManagementSystem
         public void register(Student student);
         public List<Student> listOfStudents();
         public void enroll(Student student, Course course, DateTime enrollmentdate);
-        public List<Enroll> listOfEnrollments();
+        public void listOfEnrollments();
     }
 }

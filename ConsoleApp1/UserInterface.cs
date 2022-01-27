@@ -33,6 +33,14 @@ namespace StudentManagementSystem
         {
         }
     }
+    class CourseException : Exception 
+    {
+        public CourseException(string message): base(message)
+        {
+
+        }
+    }
+
     class ScreenDescription : UserInterface
     {
         //Presentation Layer
@@ -92,8 +100,8 @@ namespace StudentManagementSystem
         {
             Console.WriteLine("You are in all enrollment screen");
             Console.WriteLine("Student Id\tStudent Name\tCourse Name\tDate of Enrollment\n");
-            foreach (Enroll enr in en.listOfEnrollments())
-                info.display(enr);
+            en.listOfEnrollments();
+               
         }
         public void showStudentScreen()
         {
@@ -262,59 +270,79 @@ namespace StudentManagementSystem
             Student student = new Student();
             Console.WriteLine("enter student id");
             int id = int.Parse(Console.ReadLine());
-            bool isStudent = false;
+            //en.listOfStudents();
+            //bool isStudent = false;
 
-            foreach (var std in en.StudentArr)
-            {
-                if (id == Int32.Parse(std.Id))
-                {
-                    isStudent = true;
-                    student = std;
-                }
-            }
+            //foreach (var std in en.StudentArr)
+            //{
+            //    if (id == Int32.Parse(std.Id))
+            //    {
+            //        isStudent = true;
+            //        student = std;
+            //    }
+            //}
 
-            if (!isStudent)
-            {
-                Console.WriteLine("The student is not registered on the Student Management System\n");
-                return;
-            }
+            //if (!isStudent)
+            //{
+            //    Console.WriteLine("The student is not registered on the Student Management System\n");
+            //    return;
+            //}
 
             showAllCoursesScreen();
             Console.WriteLine("\nEnter course id");
             int courseid = int.Parse(Console.ReadLine());
 
-            foreach (var cs in en.CourseArr)
+            try
             {
-                if (courseid == Int32.Parse(cs.CourseId))
-                {
-                    int courid = en.getId(id);
-                    if (courid == courseid)
-                    {
-                        throw new AlreadySelectedCourse("You have already selected the course");
-                    }
-                    else if (cs.SeatsAvaialble <= 0)
-                    {
-                        throw new ExceedLimitException("Seats not available");
-                    }
+                en.enroll(en.GetStudentById(id.ToString()), en.GetCourseById(courseid.ToString()), DateTime.Now);
+            }
+            catch (AlreadySelectedCourse )
+            {
+                Console.WriteLine("you are already enrolled in this course");
+            }
+            catch(StudentException)
+            {
+                Console.WriteLine(" student with that id does not exist ");
+            }
+            catch(CourseException)
+            {
+                Console.WriteLine("Cousre with that id does not exist");
+            }
 
-                    else
-                    {
-                        course = cs;
-                        DateTime date1 = DateTime.Now;
-                        en.enroll(student, course, date1.Date);
-                        cs.SeatsAvaialble = cs.SeatsAvaialble - 1;
-                        Console.WriteLine("Registered for the course Successfully\n");
-                    }
-                }
+            
+
+            //foreach (var cs in en.CourseArr)
+            //{
+            //    if (courseid == Int32.Parse(cs.CourseId))
+            //    {
+            //        int courid = en.getId(id);
+            //        if (courid == courseid)
+            //        {
+            //            throw new AlreadySelectedCourse("You have already selected the course");
+            //        }
+            //        else if (cs.SeatsAvaialble <= 0)
+            //        {
+            //            throw new ExceedLimitException("Seats not available");
+            //        }
+
+                    //else
+                    //{
+                    //    course = cs;
+                    //    DateTime date1 = DateTime.Now;
+                       
+                    //    cs.SeatsAvaialble = cs.SeatsAvaialble - 1;
+                    //    Console.WriteLine("Registered for the course Successfully\n");
+                    //}
+                //}
             }
 
 
 
-        }
+        
         public void showFirstScreen()
         {
 
-            en.introduce(new DegreeCourse("11", "CS", "3 Months", 3000, 10, Enum.Parse<DegreeCourse.level>("Bachelors"),true, "Degree"));
+           // en.introduce(new DegreeCourse("11", "CS", "3 Months", 3000, 10, Enum.Parse<DegreeCourse.level>("Bachelors"),true, "Degree"));
 
             while (true)
             {

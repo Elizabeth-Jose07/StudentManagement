@@ -12,7 +12,13 @@ namespace StudentManagementSystem
         protected float fees;
         protected int seatsavaialble;
         protected string courseType;
+
         public Course() { }
+        public Course(string id,string name)
+        {
+            this.id = id;
+            this.name = name;
+        }
         public Course(string id, string name, string duration, float fees, int seatsavaialble, string courseType)
         {
             this.id = id;
