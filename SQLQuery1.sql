@@ -139,7 +139,7 @@ SET [seats available] = [seats available]-1
 where course.cid=(select i.cid from inserted i)
 end
 
-insert into Enroll values(91,100,'2022-01-31');
+insert into Enroll values(500,100,'2022-01-31');
  
  ALTER TABLE course
 ADD CONSTRAINT [seats available]
