@@ -137,28 +137,16 @@ namespace StudentManagementSystem
 
         public void showStudentDetailsById()
         {
-
+            
             Student student = new Student();
             Console.WriteLine("enter student id");
-            int id = int.Parse(Console.ReadLine());
-            bool isStudent = false;
-            for (int i = 0; i < en.count; i++)
-            {
-                if (id == Int32.Parse(en.StudentArr[i].Id))
-                {
-                    isStudent = true;
-                    student = en.StudentArr[i];
-                }
-            }
-
-            if (!isStudent)
-            {
-                Console.WriteLine("The student is not registered on the Student Management System");
-                return;
-            }
+            string id = Console.ReadLine();
+            
+            
 
             Console.WriteLine("Id\tName\tDate of Birth\n");
-            info.display(student);
+            Console.WriteLine(en.GetStudentById(id));
+
         }
 
         public void showStudentRegistrationScreen()
@@ -184,9 +172,18 @@ namespace StudentManagementSystem
         {
             Console.WriteLine("Available Courses");
 
-
+            
             Console.WriteLine("Select Type\n1. Degree\n2. Diploma");
-            int ch = int.Parse(Console.ReadLine());
+            int ch = 0;
+            try
+            {
+               ch = int.Parse(Console.ReadLine());
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+          
 
 
             switch (ch)
@@ -266,10 +263,12 @@ namespace StudentManagementSystem
 
         public void showEnrollmentScreen()
         {
-            Course course;
-            Student student = new Student();
+            //Course course;
+             
             Console.WriteLine("enter student id");
             int id = int.Parse(Console.ReadLine());
+
+            Student student = en.GetStudentById(id.ToString());
             //en.listOfStudents();
             //bool isStudent = false;
 
@@ -282,11 +281,11 @@ namespace StudentManagementSystem
             //    }
             //}
 
-            //if (!isStudent)
-            //{
-            //    Console.WriteLine("The student is not registered on the Student Management System\n");
-            //    return;
-            //}
+            if (student==null)
+            {
+                Console.WriteLine("The student is not registered on the Student Management System\n");
+                return;
+            }
 
             showAllCoursesScreen();
             Console.WriteLine("\nEnter course id");
@@ -296,20 +295,12 @@ namespace StudentManagementSystem
             {
                 en.enroll(en.GetStudentById(id.ToString()), en.GetCourseById(courseid.ToString()), DateTime.Now);
             }
-            catch (AlreadySelectedCourse )
+            catch(Exception e)
             {
-                Console.WriteLine("you are already enrolled in this course");
-            }
-            catch(StudentException)
-            {
-                Console.WriteLine(" student with that id does not exist ");
-            }
-            catch(CourseException)
-            {
-                Console.WriteLine("Cousre with that id does not exist");
+                Console.WriteLine(e.Message);
             }
 
-            
+
 
             //foreach (var cs in en.CourseArr)
             //{
@@ -325,16 +316,19 @@ namespace StudentManagementSystem
             //            throw new ExceedLimitException("Seats not available");
             //        }
 
-                    //else
-                    //{
-                    //    course = cs;
-                    //    DateTime date1 = DateTime.Now;
-                       
-                    //    cs.SeatsAvaialble = cs.SeatsAvaialble - 1;
-                    //    Console.WriteLine("Registered for the course Successfully\n");
-                    //}
-                //}
-            }
+            //else
+            //{
+            //    course = cs;
+            //    DateTime date1 = DateTime.Now;
+
+            //    cs.SeatsAvaialble = cs.SeatsAvaialble - 1;
+            //    Console.WriteLine("Registered for the course Successfully\n");
+            //}
+            //}
+
+
+
+        }
 
 
 

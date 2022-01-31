@@ -240,6 +240,9 @@ namespace StudentManagementSystem
             //count++;
             if (student.Id != "" && student.Name != "" )
             {
+
+                if (cnn.State == System.Data.ConnectionState.Open)
+                    cnn.Close();
                 cnn.Open();
                 SqlCommand cmd = new SqlCommand("procinsertstudents",cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -247,9 +250,6 @@ namespace StudentManagementSystem
                 cmd.Parameters.AddWithValue("stname", student.Name);
                 cmd.Parameters.AddWithValue("stdob", student.DOB);
 
-                if (cnn.State == System.Data.ConnectionState.Open)
-                    cnn.Close();
-                cnn.Open();
                 try
                 {
                    
@@ -315,34 +315,42 @@ namespace StudentManagementSystem
         {
             if (student.Id != "" && course.CourseId != "")
             {
-                cnn.Open();
-                SqlCommand cmd = new SqlCommand("procenroll", cnn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@stid", student.Id);
-                cmd.Parameters.AddWithValue("@cid", course.CourseId);
-                cmd.Parameters.AddWithValue("@doe", DateTime.UtcNow );
-
                 if (cnn.State == System.Data.ConnectionState.Open)
                     cnn.Close();
                 cnn.Open();
+                
+                
                 try
                 {
+
+                    SqlCommand cmd = new SqlCommand("procenroll", cnn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@stid", student.Id);
+                    cmd.Parameters.AddWithValue("@cid", course.CourseId);
+                    cmd.Parameters.AddWithValue("@doe", DateTime.UtcNow);
+
 
                     if (cmd.ExecuteNonQuery() > 0)
                     {
 
                         Console.WriteLine("student {0} enrolled successfully", student.Name);
-
+                        
                     }
                 }
+               
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex);
+                    Console.WriteLine(ex.Message);
                 }
+
+
+               
                 finally
                 {
+                   
                     cnn.Close();
                 }
+
             }
             else throw new Exception(" enter complete details ");
 

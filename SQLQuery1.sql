@@ -103,3 +103,49 @@ ADD [placement] BOOLEAN;
  --join course c on
  --c.cid=e.cid;
  --end
+
+--Create TRIGGER trig_oncourse
+--ON course
+--AFTER INSERT 
+--AS
+--BEGIN
+--    UPDATE c
+    
+--    SET c.[seats available] = c.[seats available] - 1
+--   from course c
+    
+
+--    inner join inserted i ON e.cid = c.cid
+--END
+
+--create proc seatsupdation
+--as
+--begin
+--update course  set [seats available]= seats available - 1
+--where course.cid = enroll.cid
+--end
+
+--insert into enroll values(91,701,'2022-01-31');
+
+--drop trigger trig_onEnroll
+
+CREATE TRIGGER trig_onenroll ON enroll
+AFTER INSERT
+AS
+begin 
+update course 
+-- gets the column information from the first table
+SET [seats available] = [seats available]-1  
+where course.cid=(select i.cid from inserted i)
+end
+
+insert into Enroll values(91,100,'2022-01-31');
+ 
+ ALTER TABLE course
+ADD CONSTRAINT [seats available]
+  CHECK ([seats available]>0);
+
+  select * from course
+ 
+
+  drop trigger trig_onenroll
