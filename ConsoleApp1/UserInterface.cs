@@ -49,8 +49,8 @@ namespace StudentManagementSystem
 
         public void showAdminScreen()
         {
-            Console.WriteLine("You are in admin screen");
-            Console.WriteLine("---Welcome to Admin Dashboard---");
+            Console.WriteLine("\nYou are in admin screen\n");
+            Console.WriteLine("\n\n------Welcome to Admin Dashboard------\n\n");
             Console.WriteLine("\nEnter your choice:\n1.Register a student on Student Management System\n2.Show all Student Details\n3.Show all current Student Enrollments\n" +
                 "4.Introduce new course\n5.Show all courses\n6.Display Student Details by ID\n7.Enroll Student in a Course");
             int ch = 0;
@@ -98,7 +98,7 @@ namespace StudentManagementSystem
 
         public void showEnrollments()
         {
-            Console.WriteLine("You are in all enrollment screen");
+            Console.WriteLine("\n\n----------All Enrollments screen----------\n\n");
             Console.WriteLine("Student Id\tStudent Name\tCourse Name\tDate of Enrollment\n");
             en.listOfEnrollments();
                
@@ -106,7 +106,7 @@ namespace StudentManagementSystem
         public void showStudentScreen()
         {
 
-            Console.WriteLine("You are in student screen");
+            Console.WriteLine("\n\n--------------Student screen----------\n\n");
             Console.WriteLine("\nEnter your choice:\n1.Register on Sudent Management System\n2.Register for a Course");
             int ch = Convert.ToInt32(Console.ReadLine());
             switch (ch)
@@ -127,8 +127,8 @@ namespace StudentManagementSystem
 
         public void showAllStudentsScreen()
         {
-
-            Console.WriteLine("Available Students");
+            Console.WriteLine("\n----------------All Students Screen-------------\n");
+            Console.WriteLine("\nAvailable Students\n");
             Console.WriteLine("Id\tName\tDate of Birth\n");
 
             foreach (Student student in en.listOfStudents())
@@ -139,20 +139,20 @@ namespace StudentManagementSystem
         {
             
             Student student = new Student();
-            Console.WriteLine("enter student id");
+            Console.WriteLine("\nenter student id");
             string id = Console.ReadLine();
             
             
 
-            Console.WriteLine("Id\tName\tDate of Birth\n");
+            Console.WriteLine("\n Id\tName\tDate of Birth\n");
             Console.WriteLine(en.GetStudentById(id));
 
         }
 
         public void showStudentRegistrationScreen()
         {
-            Console.WriteLine("You are in student registration screen");
-            Console.WriteLine("----------------------student screen-------------------------");
+            Console.WriteLine("\nYou are in student registration screen\n");
+            Console.WriteLine("\n\n----------------------student screen-------------------------\n\n");
             Console.WriteLine("Enter student id:");
             string id = Console.ReadLine();
             Console.WriteLine("Enter student name:");
@@ -170,10 +170,10 @@ namespace StudentManagementSystem
 
         public void showAllCoursesScreen()
         {
-            Console.WriteLine("Available Courses");
+            Console.WriteLine("\n-----Available Courses-----\n");
 
             
-            Console.WriteLine("Select Type\n1. Degree\n2. Diploma");
+            Console.WriteLine("\nSelect Type\n1. Degree\n2. Diploma\n");
             int ch = 0;
             try
             {
@@ -191,14 +191,14 @@ namespace StudentManagementSystem
                 case 1:
                     var degreeCourse = en.listOfCourses();
 
-                    Console.WriteLine("\nID\tCourse Name\tDuration\tFee\tSeats\tLevel\tPlacemment Available");
+                    Console.WriteLine("\nID\tCourse Name\tDuration\tFee\tSeats\tLevel\tPlacemment Available\n");
 
                     foreach (var course in degreeCourse)
                         Console.WriteLine(course);
                     break;
                 case 2:
 
-                    Console.WriteLine("\nID\tCourse Name\tDuration\tFee\tSeats\tType");
+                    Console.WriteLine("\nID\tCourse Name\tDuration\tFee\tSeats\tType\n");
 
                     var diplomaCourse = en.listOfDCourses();
                     foreach (var course in diplomaCourse)
@@ -213,7 +213,7 @@ namespace StudentManagementSystem
 
         public void introduceNewCourseScreen()
         {
-            Console.WriteLine("You are in introduce new course screen");
+            Console.WriteLine("\n-----------You are in introduce new course screen----------\n");
             Console.WriteLine("\n\n---Add a new Course---\n\n");
 
   
@@ -264,7 +264,7 @@ namespace StudentManagementSystem
         public void showEnrollmentScreen()
         {
             //Course course;
-             
+            Console.WriteLine("\n\n-----\nAll enrollments screen-----\n\n");
             Console.WriteLine("enter student id");
             int id = int.Parse(Console.ReadLine());
 
@@ -283,7 +283,7 @@ namespace StudentManagementSystem
 
             if (student==null)
             {
-                Console.WriteLine("The student is not registered on the Student Management System\n");
+                Console.WriteLine("\nThe student is not registered on the Student Management System\n");
                 return;
             }
 
@@ -340,8 +340,8 @@ namespace StudentManagementSystem
 
             while (true)
             {
-                Console.WriteLine("Welcome to SMS(Student Mgmt. System) v1.0");
-                Console.WriteLine("Tell us who you are : \n1. Student\n2. Admin\n3. Exit");
+                Console.WriteLine("\n\n**********Welcome to SMS(Student Mgmt. System) v1.0**********\n\n");
+                Console.WriteLine("Tell us who you are : \n1. Student\n2. Admin\n3. Exit\n");
                 Console.WriteLine("Enter your choice ( 1, 2 or 3 ) : ");
 
                 int op = 0;
